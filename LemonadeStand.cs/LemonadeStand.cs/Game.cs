@@ -18,8 +18,8 @@ namespace LemonadeStand.cs
         public Game()
         {
             random = new Random();
-            player = new Player(random);
             businessPeriod = 0;
+            player = new Player(random);
             daysOpen = 0;
             //location = new Location();
             location = SetLocation();
@@ -64,24 +64,26 @@ namespace LemonadeStand.cs
         }
         public void SetBusinessPeriod()
         {
-            Console.WriteLine("For how many days would you like to run your lemonade stand?");
+            while (businessPeriod<1||businessPeriod>30)
             try
             {
+                Console.WriteLine("For how many days would you like to run your lemonade stand? Minimum: 1 day, maximum: 30 days.");
                 businessPeriod = int.Parse(Console.ReadLine().Trim());
             }
             catch (Exception)                                                   //DOES NOT CATCH NEGATIVE NUMBERS
             {
-                Console.WriteLine("Invalid entry.");
+                Console.WriteLine("Invalid entry. Enter a number between 1 and 30.");
                 SetBusinessPeriod();
             }
+           
         }
         public Location SetLocation()
         {
             Console.WriteLine("Where would you like to set your location?"+
                 "Your options are San Diego, Alaska, Kuwait, and the Nevada. \n"
                 + "Enter 'SD' for San Diego, 'AK' for Alaska, 'KW' for Kuwait or 'NV' for Nevada");     
-            string locationChosen = Console.ReadLine().Trim().ToLower();
-            if (locationChosen == "sd"||locationChosen=="sandiego")
+            string locationChosen = Console.ReadLine().Trim().ToLower().Replace(" ","");
+            if (locationChosen == "sd"||locationChosen=="sandiego")     
             {
                 return location = new SanDiego();
             }
@@ -119,18 +121,20 @@ namespace LemonadeStand.cs
             DisplayGrade();
 
         }
+
         public void DisplayFinalProfitWithMessage()
         {
             Console.WriteLine("After " + businessPeriod + " days in business,"
     + " your total profit is $" + player.profitSinceStart);
         }
+
         public void GradeProfitByLocation()
         {
-            if ((player.profitSinceStart > 50) && (location.maximumTemperature < 110))
+            if ((player.profitSinceStart/daysOpen > 20) && (location.maximumTemperature < 110))
             {
                 player.finalGrade = "EXCELLENT!";
             }
-            else if ((player.profitSinceStart < 10) && (location.minimumTemperature > 70))
+            else if ((player.profitSinceStart/daysOpen < 4) && (location.minimumTemperature > 70))
             {
                 player.finalGrade = "PATHETIC!";
             }
@@ -139,6 +143,7 @@ namespace LemonadeStand.cs
                 player.finalGrade = "okay.";
             }
         }
+
         public void DisplayGrade()
         {
             Console.WriteLine("\nConsidering the conditions you played with, your performance was " +

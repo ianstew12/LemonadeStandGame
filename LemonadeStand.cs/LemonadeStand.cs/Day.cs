@@ -118,14 +118,13 @@ namespace LemonadeStand.cs
 
         public bool CheckSaleCriteria(Customer customer, Player player)
         {
-            if (CheckPriceCriterion(customer, player) && CheckInventoryCriterion(customer, player))
+            if (CheckPriceCriterion(customer, player) && CheckInventoryCriterion(player))
             {
                 return true;
             }
             else
             {
-                return false;
-                
+                return false;   
             }
         }
         public bool CheckPriceCriterion(Customer customer, Player player)
@@ -140,9 +139,9 @@ namespace LemonadeStand.cs
                 return false;
             }
         }
-        public bool CheckInventoryCriterion(Customer customer, Player player)
+        public bool CheckInventoryCriterion(Player player)
         {
-            if (player.checkRequiredInventory())
+            if (player.CheckRequiredInventory())
             {
                 return true;
             }
@@ -174,6 +173,7 @@ namespace LemonadeStand.cs
         public void RecapDay(Player player)
         {
             Console.WriteLine("\nDAILY RECAP:");
+            weather.DisplayWeather();
             DisplayDailyFinances(player);
             Console.WriteLine("Think for a second about what today's conditions were and how things went," +
                 " then hit enter to continue.\n");
@@ -218,7 +218,7 @@ namespace LemonadeStand.cs
         {
             ResetDailyTrackers(player);
             DumpLeftoverLemonade(player);
-            if (!player.boughtRefrigeration)
+            if (!player.boughtIcebox)
             { PerishableInventorySpoils(player); }
         }
 

@@ -17,7 +17,7 @@ namespace LemonadeStand.cs
         public decimal startupCapital;
         public double profitSinceStart;
         public double dailyCosts;
-        public bool boughtRefrigeration;
+        public bool boughtIcebox;
         public string finalGrade;
 
         public Player(Random random)
@@ -29,7 +29,7 @@ namespace LemonadeStand.cs
             startupCapital = random.Next(1000, 5000);
             wallet.balance = startupCapital;
             pitchersAvailable = 0;
-            boughtRefrigeration = false;
+            boughtIcebox = false;
         }
 
         public void MakePitcher()
@@ -61,14 +61,32 @@ namespace LemonadeStand.cs
 
         public void MakeSpecifiedPitchers()
         {
-            Console.WriteLine("\nPITCHER QUANTITY:\nHow many pitchers would you like to make?"+
-                "\nReminder: The Health Department requires you dump remaining pitchers after each business day.");
-            int pitcherCount = int.Parse(Console.ReadLine());
+            int pitcherCount =GetPitcherCount();
             for (int i = 0; i < pitcherCount; i++)
             {
                 MakePitcher();
             }
         }
+
+        public int GetPitcherCount()
+        {
+            int PitchersRequested = -2;
+            while (PitchersRequested < 0)
+            {
+                try
+                {
+                    Console.WriteLine("\nPITCHER QUANTITY:\nHow many pitchers would you like to make?" +
+                    "\nReminder: The Health Department requires you dump remaining pitchers after each business day.");
+                    PitchersRequested = int.Parse(Console.ReadLine().Trim());
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("\nYOU MUST ENTER A POSITIVE INTEGER. TRY AGAIN.");
+                }
+            }
+            return PitchersRequested;
+        }
+
 
         public void SellServing()
         {
@@ -79,9 +97,9 @@ namespace LemonadeStand.cs
             }
         }
 
-        public bool checkRequiredInventory()
+        public bool CheckRequiredInventory()
         {
-            if (checkCupsInventory() && checkPitcherStatus())
+            if (CheckCupsInventory() && CheckPitcherStatus())
             {
                 return true;
             }
@@ -90,7 +108,7 @@ namespace LemonadeStand.cs
                 return false;
             }
         }
-        public bool checkCupsInventory()
+        public bool CheckCupsInventory()
         {
             int cupsInStock = inventory.cupsInventory.Count;
             if (cupsInStock > 0)
@@ -102,7 +120,7 @@ namespace LemonadeStand.cs
                 return false;
             }
         }
-        public bool checkPitcherStatus()
+        public bool CheckPitcherStatus()
         {
             if (pitchersAvailable >= 0.1)
             {
@@ -130,8 +148,21 @@ namespace LemonadeStand.cs
 
         public void SetServingPrice()
         {
-            Console.WriteLine("\nSET YOUR PRICE:\nHow many cents do you want to charge per serving today?");
-            chosenPrice = int.Parse(Console.ReadLine());
+            chosenPrice = -1;
+            while (chosenPrice < 0||chosenPrice>5000)
+            {
+                try
+                {
+                    Console.WriteLine("\nSET YOUR PRICE:\nHow many cents do you want to charge per serving today?");
+                    chosenPrice = int.Parse(Console.ReadLine().Trim());
+                }
+                catch
+                {
+                    Console.WriteLine("Unfortunately, this game exists in an economy with strict price controls. You " +
+                        "are not allowed to charge less than zero or more than 5000 cents");
+                }
+            }
+
         }
 
     }

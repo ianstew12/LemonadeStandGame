@@ -64,15 +64,15 @@ namespace LemonadeStand.cs
         {
             if (raining)
             {
-                Console.WriteLine("Today's weather: \nNo rain, and the temperature is " + temperature);
+                Console.WriteLine("\nToday's weather: No rain, " + temperature+" degrees");
             }
             else if (!raining)
             {
-                Console.WriteLine("Today's weather: \nRaining and the temperature is " + temperature);
+                Console.WriteLine("\nToday's weather: Raining and " + temperature+" degrees");
             }
             else
             {
-                Console.WriteLine("something with the weather is messed up"); //}todo
+                Console.WriteLine("something with the weather is messed up");
             }
         }
     }
